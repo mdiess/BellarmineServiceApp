@@ -9,10 +9,10 @@ import Foundation
 import Combine
 
 //final class ModelData: ObservableObject {
-/*@Published */var Services: [services] = load("data.json")
+/*@Published */var Services: [services] = load("data.json") // loads in the data from the data file
 //}
 
-func load<T: Decodable>(_ filename: String) -> T {
+func load<T: Decodable>(_ filename: String) -> T { // function is used to parse through the data and use it in the app
     let data: Data
     guard let file = Bundle.main.url(forResource: filename, withExtension: nil)
     else {
@@ -29,5 +29,5 @@ func load<T: Decodable>(_ filename: String) -> T {
     } catch {
         fatalError("Couldn't parse \(filename) as \(T.self):\n\(error)")
     }
-}
+} // stops the function with fatal errors if it cannot parse through the data from the file
 
