@@ -17,6 +17,7 @@
 		4D54BCA6274B197400891CCD /* services.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D54BCA5274B197400891CCD /* services.swift */; };
 		4D54BCA8274B199D00891CCD /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D54BCA7274B199D00891CCD /* data.json */; };
 		4D54BCAA274B19C800891CCD /* modelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D54BCA9274B19C800891CCD /* modelData.swift */; };
+		4DBFBBA0275442C600276B52 /* Users.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DBFBB9F275442C600276B52 /* Users.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		4D54BCA5274B197400891CCD /* services.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = services.swift; sourceTree = "<group>"; };
 		4D54BCA7274B199D00891CCD /* data.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = data.json; sourceTree = "<group>"; };
 		4D54BCA9274B19C800891CCD /* modelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = modelData.swift; sourceTree = "<group>"; };
+		4DBFBB9F275442C600276B52 /* Users.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Users.swift; sourceTree = "<group>"; };
 		7AA7CCA60F560044B5DFC905 /* Pods-BellarmineServiceApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BellarmineServiceApp.release.xcconfig"; path = "Target Support Files/Pods-BellarmineServiceApp/Pods-BellarmineServiceApp.release.xcconfig"; sourceTree = "<group>"; };
 		8D4EA3A2867054FF1D24CF6D /* Pods_BellarmineServiceApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BellarmineServiceApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -110,6 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				4D54BCA5274B197400891CCD /* services.swift */,
+				4DBFBB9F275442C600276B52 /* Users.swift */,
 				4D54BCA9274B19C800891CCD /* modelData.swift */,
 			);
 			path = Model;
@@ -251,6 +254,7 @@
 				4D54BC92274B14C200891CCD /* ContentView.swift in Sources */,
 				4D54BCA6274B197400891CCD /* services.swift in Sources */,
 				4D54BCA2274B170100891CCD /* Home.swift in Sources */,
+				4DBFBBA0275442C600276B52 /* Users.swift in Sources */,
 				4D54BC90274B14C200891CCD /* BellarmineServiceAppApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

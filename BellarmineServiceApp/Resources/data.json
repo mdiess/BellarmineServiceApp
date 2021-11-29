@@ -1,6 +1,6 @@
 [
     {
-        "id": 1001,
+        "id": "1001",
         "title": "Service Opportunity 1",
         "place": "Santa Clara University",
         "city": "Santa Clara, CA",
@@ -9,10 +9,11 @@
             "latitude": 37.354107
         },
         "description": "This is your opportunity to serve your community",
-        "imageName": "scu"
+        "imageName": "scu",
+        "isFavorite": false
     },
     {
-        "id": 1002,
+        "id": "1002",
         "title": "Service Opportunity 2",
         "place": "China",
         "city": "Hong Kong, CH",
@@ -21,10 +22,11 @@
             "latitude": 37.354107
         },
         "description": "This is a service opportunity in China",
-        "imageName": "bcp"
+        "imageName": "bcp",
+        "isFavorite": false
     },
     {
-        "id": 1003,
+        "id": "1003",
         "title": "Portland Service Op",
         "place": "Moda Center",
         "city": "Portland, OR",
@@ -33,6 +35,7 @@
             "latitude": 45.5317
         },
         "description": "Work for the Portland Trail Blazers",
-        "imageName": "moda"
+        "imageName": "moda",
+        "isFavorite": false
     }
 ]

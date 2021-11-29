@@ -8,11 +8,13 @@
 import SwiftUI
 import MapKit
 import FirebaseAuth
+import FirebaseDatabase
+import UIKit
 
 class AppViewModel: ObservableObject {
-    //@Published var username = ""
     let auth = Auth.auth()
     @Published var signedIn = false
+    @Published var UID = ""
     var isSignedIn: Bool {
         return auth.currentUser != nil
     }
@@ -24,10 +26,9 @@ class AppViewModel: ObservableObject {
             }
             DispatchQueue.main.async {
                 self?.signedIn = true
-                //self?.username = email
             }
-            //self?.username = email
         }
+        self.UID = email
     }
     func signUp(email: String, password: String) {
         auth.createUser(withEmail: email,
@@ -37,17 +38,35 @@ class AppViewModel: ObservableObject {
             }
             DispatchQueue.main.async {
                 self?.signedIn = true
-                //self?.username = email
             }
-            //self?.username = email
         }
+        self.UID = email
     }
     func signOut() {
         try? auth.signOut()
         self.signedIn = false
+        self.UID = ""
     }
 }
-
+/*
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    @IBOutlet weak var tableView: UITableView!
+    
+    var postData = ["Message", "Message2"]
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return postData.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell")!
+        cell.textLabel?.text = postData[indexPath.row]
+        return cell
+    }
+    
+    
+}
+*/
 struct Home: View {
     @EnvironmentObject var viewModel: AppViewModel
     var body: some View {
@@ -58,6 +77,8 @@ struct Home: View {
                 SignInView()
             }
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
         .onAppear {
             viewModel.signedIn = viewModel.isSignedIn
         }
@@ -70,12 +91,14 @@ struct SignInView: View {
     @EnvironmentObject var viewModel: AppViewModel
     var body: some View {
             VStack {
-                Image("bcp").padding(.bottom, 75)
+                Image("bcp")
+                    .padding(.bottom, 75)
+                    .shadow(radius: 10)
                 TextField("Email Address", text: $email)
                     .autocapitalization(.none)
                     .disableAutocorrection(true)
                     .frame(width: 300, height: 45)
-                    .background(Color(red: 211/255, green: 211/255, blue: 211/255))
+                    //.background(Color(red: 211/255, green: 211/255, blue: 211/255))
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .font(.system(size: 16))
                     .multilineTextAlignment(.center)
@@ -84,7 +107,7 @@ struct SignInView: View {
                     .autocapitalization(.none)
                     .disableAutocorrection(true)
                     .frame(width: 300, height: 45)
-                    .background(Color(red: 211/255, green: 211/255, blue: 211/255))
+                    //.background(Color(red: 211/255, green: 211/255, blue: 211/255))
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .font(.system(size: 16))
                     .multilineTextAlignment(.center)
@@ -94,7 +117,6 @@ struct SignInView: View {
                         return
                     }
                     viewModel.signIn(email: email, password: password)
-                   // viewModel.username = email
                 }) {
                     Text("Sign In")
                         .frame(width: 250, height: 45)
@@ -119,12 +141,14 @@ struct SignUpView: View {
     @EnvironmentObject var viewModel: AppViewModel
     var body: some View {
             VStack {
-                Image("bcp").padding(.bottom, 75)
+                Image("bcp")
+                    .padding(.bottom, 75)
+                    .shadow(radius: 10)
                 TextField("Email Address", text: $email)
                     .autocapitalization(.none)
                     .disableAutocorrection(true)
                     .frame(width: 300, height: 45)
-                    .background(Color(red: 211/255, green: 211/255, blue: 211/255))
+                    //.background(Color(red: 211/255, green: 211/255, blue: 211/255))
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .font(.system(size: 16))
                     .multilineTextAlignment(.center)
@@ -133,7 +157,7 @@ struct SignUpView: View {
                     .autocapitalization(.none)
                     .disableAutocorrection(true)
                     .frame(width: 300, height: 45)
-                    .background(Color(red: 211/255, green: 211/255, blue: 211/255))
+                    //.background(Color(red: 211/255, green: 211/255, blue: 211/255))
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .font(.system(size: 16))
                     .multilineTextAlignment(.center)
@@ -162,16 +186,30 @@ struct SignUpView: View {
 
 struct serviceList: View {
     @EnvironmentObject var viewModel: AppViewModel
+    //@EnvironmentObject var modelData: ModelData
+    @State private var showFavsOnly = false
+    var filteredServices: [services] {
+        /*modelData.*/Services.filter { Service in
+            (!showFavsOnly /*|| Service.isFavorite*/)
+        }
+    }
     var body: some View {
-        List(Services) { Service in
-            NavigationLink(destination: serviceDetail(Service: Service)) {
-                serviceRow(Service: Service)
+        List {
+            Toggle(isOn: $showFavsOnly) {
+                Text("Saved Opportunities")
+            }
+            ForEach(filteredServices) { Service in
+                NavigationLink(destination: serviceDetail(Service: Service)) {
+                    serviceRow(Service: Service)
+                }
             }
         }
         .navigationTitle("Service Opportunities")
         .toolbar {
             NavigationLink(destination: ProfilePage()) {
                 Image(systemName: "person.crop.circle")
+                    .font(.system(size: 30))
+                    .foregroundColor(Color(red: 170/255, green: 170/255, blue: 170/255))
             }
         }
     }
@@ -185,12 +223,12 @@ struct ProfilePage: View {
                         .font(.system(size: 150))
                         .foregroundColor(.gray)
                         .shadow(radius: 10)
-                Text("Student Email")
-               // Text(viewModel.username)
-                        .fontWeight(.bold)
-                        .font(.system(size: 40))
-                    Divider()
-                        .padding(.bottom, 20)
+                //Text("Student Email")
+                Text(viewModel.UID)
+                    .fontWeight(.bold)
+                    .font(.system(size: 30))
+                Divider()
+                    .padding(.bottom, 20)
                 Text("Enter your hours")
                     .font(.system(size: 20))
                     .fontWeight(.bold)
@@ -200,7 +238,7 @@ struct ProfilePage: View {
                     .padding(.bottom, 10)
                 CustomProgress()
                 Spacer()
-                NavigationLink(destination: SignInView().onAppear() {
+                NavigationLink(destination: Home().onAppear() {
                     viewModel.signOut()
                 }) {
                     Text("Sign Out")
@@ -276,12 +314,22 @@ struct serviceRow: View {
                 .frame(width: 50, height: 50)
             Text(Service.title)
             Spacer()
+            /*
+            if Service.isFavorite {
+                Image(systemName: "bookmark.fill")
+                    .foregroundColor(.red)
+            }
+             */
         }
     }
 }
 
 struct serviceDetail: View {
+    //@EnvironmentObject var modelData: ModelData
     var Service: services
+    /*var serviceIndex: Int {
+        modelData.Services.firstIndex(where: { $0.id == Service.id })!
+    }*/
     var body: some View {
         ScrollView {
             VStack {
@@ -292,9 +340,12 @@ struct serviceDetail: View {
                     .offset(y: -130)
                     .padding(.bottom, -130)
                 VStack(alignment: .leading) {
-                    Text(Service.title)
-                        .font(.title)
-                        .foregroundColor(.red)
+                    //HStack {
+                        Text(Service.title)
+                            .font(.title)
+                            .foregroundColor(.red)
+                        //SavedButton(isSet: $modelData.Services[serviceIndex].isFavorite)
+                   // }
                     HStack {
                         Text(Service.place)
                             .font(.subheadline)
@@ -311,6 +362,7 @@ struct serviceDetail: View {
                 .padding()
                 Spacer()
             }
+            //.navigationBarHidden(true)
         }
     }
 }
@@ -345,9 +397,23 @@ struct mapview: View {
     }
 }
 
+struct SavedButton: View {
+    @Binding var isSet: Bool
+    var body: some View {
+        Button {
+            isSet.toggle()
+        } label: {
+            Image(systemName: isSet ? "bookmark.fill" : "bookmark")
+                .labelStyle(.iconOnly)
+                .foregroundColor(isSet ? .red : .gray)
+        }
+    }
+}
 
 struct Home_Previews: PreviewProvider {
     static var previews: some View {
         Home()
     }
 }
+
+

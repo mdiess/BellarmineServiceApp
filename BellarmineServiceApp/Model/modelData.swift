@@ -6,8 +6,11 @@
 //
 
 import Foundation
+import Combine
 
-var Services: [services] = load("data.json")
+//final class ModelData: ObservableObject {
+/*@Published */var Services: [services] = load("data.json")
+//}
 
 func load<T: Decodable>(_ filename: String) -> T {
     let data: Data

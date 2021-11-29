@@ -7,15 +7,18 @@
 
 import SwiftUI
 import Firebase
+import FirebaseDatabase
 
 @main
 struct BellarmineServiceAppApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    //@StateObject private var modelData = ModelData()
     var body: some Scene {
         WindowGroup {
             let viewModel = AppViewModel()
             ContentView()
                 .environmentObject(viewModel)
+                //.environmentObject(modelData)
         }
     }
 }
@@ -25,4 +28,5 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         FirebaseApp.configure()
         return true
     }
+    //var ref: DatabaseReference! = Database.database().reference()
 }
