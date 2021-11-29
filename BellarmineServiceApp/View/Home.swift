@@ -9,7 +9,9 @@
 *****************************************************************************************************************************
  
  
- The admin view is based out of firebase and all administrators are given acces to the database. Through this administrator view, they can add new students, and service opportunities throught the back end. Students do not have this capability
+ The admin view is based out of firebase and all administrators are given acces to the database.
+ Through this administrator view, they can add new students, and service opportunities throught the back end.
+ Students do not have this capability.
  
 
 *****************************************************************************************************************************
