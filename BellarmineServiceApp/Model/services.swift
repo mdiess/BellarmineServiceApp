@@ -16,7 +16,7 @@ struct services: Hashable, Codable, Identifiable { // struct to initializes all 
     var place: String
     var city: String
     var description: String
-    //var isFavorite: Bool
+    var isFavorite: Bool
     
     private var imageName: String
     //var latitude: Double

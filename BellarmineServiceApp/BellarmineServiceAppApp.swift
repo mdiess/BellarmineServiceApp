@@ -12,13 +12,13 @@ import FirebaseDatabase
 @main
 struct BellarmineServiceAppApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate // initializes appDelegate
-    //@StateObject private var modelData = ModelData() // state object for the saved button
+    @StateObject private var modelData = ModelData() // state object for the saved button
     var body: some Scene {
         WindowGroup {
             let viewModel = AppViewModel() // initializes viewModel
             ContentView()
                 .environmentObject(viewModel) // need environment objects for the environment objects in the main section of code
-                //.environmentObject(modelData)
+                .environmentObject(modelData) 
         }
     }
 }

@@ -5,6 +5,16 @@
 //  Created by Max Diess on 11/21/21.
 //
 
+/*
+*****************************************************************************************************************************
+ 
+ 
+ The admin view is based out of firebase and all administrators are given acces to the database. Through this administrator view, they can add new students, and service opportunities throught the back end. Students do not have this capability
+ 
+
+*****************************************************************************************************************************
+*/
+
 import SwiftUI
 import MapKit
 import FirebaseAuth
@@ -186,11 +196,11 @@ struct SignUpView: View {
 
 struct serviceList: View {
     @EnvironmentObject var viewModel: AppViewModel // creates an environment object that inherits from AppViewModel
-    //@EnvironmentObject var modelData: ModelData // creates an environment object that inherits from ModelData
+    @EnvironmentObject var modelData: ModelData // creates an environment object that inherits from ModelData
     @State private var showFavsOnly = false // initializes a variable to show if an opportunity is a favorite or not
     var filteredServices: [services] { // initializes variable to filter between showing only saved opportunities or not
-        /*modelData.*/Services.filter { Service in
-            (!showFavsOnly /*|| Service.isFavorite*/) // checks if opportunity is favorite
+        modelData.Services.filter { Service in
+            (!showFavsOnly || Service.isFavorite) // checks if opportunity is favorite
         }
     }
     var body: some View {
@@ -314,22 +324,22 @@ struct serviceRow: View {
                 .frame(width: 50, height: 50)
             Text(Service.title) // adds title of service opportunity to the right of the image
             Spacer() // makes all of this align aling the right side
-            /*
+            
             if Service.isFavorite {
                 Image(systemName: "bookmark.fill")
                     .foregroundColor(.red)
             }
-             */
+             
         }
     }
 }
 
 struct serviceDetail: View {
-    //@EnvironmentObject var modelData: ModelData // initializes an environment object that inherits from ModelData
+    @EnvironmentObject var modelData: ModelData // initializes an environment object that inherits from ModelData
     var Service: services // initializes var of type services, which is a struct for data of the service opportunities
-    /*var serviceIndex: Int { // creates variable of the index of members in services
+    var serviceIndex: Int { // creates variable of the index of members in services
         modelData.Services.firstIndex(where: { $0.id == Service.id })!
-    }*/
+    }
     var body: some View {
         ScrollView { // allows the user to scroll on the page
             VStack { // aligns the structures in vertical way
@@ -340,12 +350,12 @@ struct serviceDetail: View {
                     .offset(y: -130) // makes the emage be half on top of the map
                     .padding(.bottom, -130) // moves up the padding on the image
                 VStack(alignment: .leading) { // aligns structures in a vertical way, with them starting on the right side
-                    //HStack { // aligns structures in a horizontal way
+                    HStack { // aligns structures in a horizontal way
                         Text(Service.title) // adds title from services
                             .font(.title)
                             .foregroundColor(.red) //changes color for looks
-                        //SavedButton(isSet: $modelData.Services[serviceIndex].isFavorite) // calls struct saved button, and allows for toggle to only show saved opportunities
-                   // }
+                        SavedButton(isSet: $modelData.Services[serviceIndex].isFavorite) // calls struct saved button, and allows for toggle to only show saved opportunities
+                    }
                     HStack { // aligns structures in a horizontal way
                         Text(Service.place) // tells what place the opportunity is in
                             .font(.subheadline)
@@ -415,5 +425,4 @@ struct Home_Previews: PreviewProvider { // this whole struct is just used to pre
         Home()
     }
 }
-
 

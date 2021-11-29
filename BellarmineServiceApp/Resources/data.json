@@ -10,7 +10,7 @@
         },
         "description": "This is your opportunity to serve your community",
         "imageName": "scu",
-        "isFavorite": false
+        "isFavorite": true
     },
     {
         "id": "1002",
