@@ -54,6 +54,19 @@ class AppViewModel: ObservableObject {
         }
         self.UID = email // sets the user id to the email address
     }
+    /*
+    private func signIn2(email: String) {
+        auth.signIn(withEmail: email) { [weak self] result, error in
+            guard result != nil, error == nil else {
+                return
+            }
+            DispatchQueue.main.async {
+                self?.signedIn = true
+            }
+        }
+        self.UID = email
+    }
+     */
     func signOut() {
         try? auth.signOut() // checks to see if the program can sign out, and runs program if it can
         self.signedIn = false // sets the signed in variable to false
@@ -285,13 +298,13 @@ struct CustomProgress: View {
                     .frame(width: hours, height: 30) // takes in the hours variable, so that it changes length with user input
                     .cornerRadius(22)
                 HStack { // aligns structures in a horizontal way
-                    if(hours/20 >= 20) { // checks if hours / 20 is greater than or equal to 20
-                        Text(String(format: "%.0f", Double(hours/20)) + "/20") // if so, writes down "20/20"
+                    if(hours/26.66666666666666667 >= 15) { // checks if hours / 20 is greater than or equal to 20
+                        Text(String(format: "%.0f", Double(hours/26.66666666666666667)) + "/15") // if so, writes down "20/20"
                             .font(.system(size: 20))
                             .fontWeight(.bold)
                             .padding(.leading, 330)
                     } else {
-                        Text(String(format: "%.1f", Double(hours/20)) + "/20") // else, writes down hours with one place behind the decimal /20
+                        Text(String(format: "%.1f", Double(hours/26.66666666666666667)) + "/15") // else, writes down hours with one place behind the decimal /20
                             .font(.system(size: 20))
                             .fontWeight(.bold)
                             .padding(.leading, 320)
@@ -300,9 +313,12 @@ struct CustomProgress: View {
             }.padding(.bottom, 10)
             Button(action: { // creates button for submitting hours
                 guard let n = NumberFormatter().number(from: inputHours) else { return } // changes inputHours to type NSObject
-                hours = hours + (CGFloat(truncating: n) * 20.0) //adds new service hours onto total, and converts hours to type CGFloat
+                hours = hours + (CGFloat(truncating: n) * 26.66666666666666667) //adds new service hours onto total, and converts hours to type CGFloat
                 if(hours > 400) { // if user submits more than 20 total hours, the bar only goes so far
                     hours = 400
+                }
+                if(hours < 0) {
+                    hours = 0
                 }
                 inputHours = "" // clears the text field
             }) {
@@ -411,9 +427,11 @@ struct mapview: View {
 
 struct SavedButton: View {
     @Binding var isSet: Bool // creates a boolean variable that can be changed-- binding connects the variable to the member in services, so that data can be changed as well
+    @EnvironmentObject var viewModel: AppViewModel
     var body: some View {
         Button {
             isSet.toggle() // creates the toggle button that has just two options
+            viewModel.signedIn = true
         } label: {
             Image(systemName: isSet ? "bookmark.fill" : "bookmark") // if it is on, the bookmark label is filled in, and see through if not
                 //.labelStyle(.iconOnly)
