@@ -30,6 +30,14 @@ class AppViewModel: ObservableObject {
     var isSignedIn: Bool { //Boolean variable checking if user is signed in
         return auth.currentUser != nil
     }
+    /*
+    func name() {
+        let user = auth.currentUser
+        Text(user.email)
+            .fontWeight(.bold)
+            .font(.system(size: 30))
+    }
+     */
     func signIn(email: String, password: String) {
         auth.signIn(withEmail: email, //checks with firebase database if user exists
                     password: password) { [weak self] result, error in
@@ -248,7 +256,9 @@ struct ProfilePage: View {
                         .font(.system(size: 150))
                         .foregroundColor(.gray)
                         .shadow(radius: 10)
+                //viewModel.name()
                 //Text("Student Email")
+                //Text(auth.displayName)
                 Text(viewModel.UID) // makes the user's screen name their email
                     .fontWeight(.bold)
                     .font(.system(size: 30))

@@ -49,7 +49,7 @@
         },
         "description": "Ada's Cafe is a 501(c)(3), non-profit corporation dedicated to hiring, training and empowering our employees with disabilities. Ada's Cafe is Where Good Food and Community Meet. We strive to create delicious food and drinks in an environment that is warm and friendly to let our customers know we care about them.  Ada's also conducts collaborative research on improving workplaces for people with disabilities.",
         "imageName": "ac",
-        "isFavorite": true
+        "isFavorite": false
     },
     {
         "id": "1005",
@@ -114,7 +114,7 @@
         },
         "description": "Atria Willow Glen provides all the comforts of home in a resort-like assisted living community which also offers a Life Guidance® memory care neighborhood for those with Alzheimer's and other forms of dementia. Invite family and friends for a walk through our courtyards and enjoy the lush landscaping and koi ponds, or take an outing to nearby downtown San Jose. Atria Willow Glen offers easy access to shopping, banks, medical facilities, parks, museums and entertainment for a more fulfilling retirement living experience. Atria Willow Glen encourages active engagement from our residents through a myriad of programs and services. From theatre and choir to aquatic fitness and tai chi, Atria Willow Glen provides the complete retirement living experience. With a full calendar of educational, social, cultural and entertainment events, Atria Willow Glen reigns superior to neighboring California assisted living communities.",
         "imageName": "awg",
-        "isFavorite": true
+        "isFavorite": false
     },
     {
         "id": "1010",
@@ -205,7 +205,7 @@
         },
         "description": "Carlton Senior Living San Jose, located in the heart of Silicon Valley, strives to create an atmosphere that supports and enhances the individual lifestyles of our residents. We offer a wide range of services for seniors including Independent Living, Assisted Living, Memory Care, On-Site Nursing, Medication and Diabetic Management. Residents can enjoy participating in various enriching, tailored activities led by our very own CALA Outstanding Department Director recipient. Carlton Senior Living San Jose’s Executive Director, with 11 years of Carlton experience, leads a team that is committed to Love, Honor and Provide for our residents Our Communities are designed to provide a rich environment where being valued, respected and loved is a natural daily occurrence. We invite you to see why 99% of Carlton family members would recommend us.",
         "imageName": "cpsal",
-        "isFavorite": false
+        "isFavorite": true
     },
     {
         "id": "1017",
@@ -270,7 +270,7 @@
         },
         "description": "We realize that every human being deserves respect and dignity. Often for those who live on the fringes of society these important conditions are nonexistent or slighted. Trying to help a little. If you are aware of locations we should add or take out just let us know.",
         "imageName": "csi",
-        "isFavorite": false
+        "isFavorite": true
     }
 
 ]
