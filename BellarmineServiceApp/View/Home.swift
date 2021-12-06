@@ -21,7 +21,30 @@ import SwiftUI
 import MapKit
 import FirebaseAuth
 import FirebaseDatabase
-import UIKit
+import Foundation
+import Combine
+
+class DataStorage: AppViewModel {
+    let ref: DatabaseReference! = Database.database().reference()
+    let userID = Auth.auth().currentUser?.uid
+    func read() {
+        ref.child("users").child(userID!).observeSingleEvent(of: .value, with: { snapshot in
+            let value = snapshot.value as? NSDictionary
+            let username = value?["username"] as? String ?? ""
+            let user = User.self
+        }) { error in
+            print(error.localizedDescription)
+        }
+    }
+    @objc func addNew() {
+        let object: [String: Any] = [
+            "title": "Abilities United" as NSObject,
+            "place": "Abilities United" as NSObject
+        ]
+        ref.child("ops_\(Int.random(in: 0..<1000))").setValue(object)
+    }
+}
+
 
 class AppViewModel: ObservableObject {
     let auth = Auth.auth()
@@ -102,10 +125,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 */
 struct Home: View {
     @EnvironmentObject var viewModel: AppViewModel // initialize and environment object that inherits from AppViewModel
+    var dataStorage: DataStorage
     var body: some View {
         NavigationView { // makes the pages in its scope be in navigation view
             if viewModel.signedIn { // check if the user is signed in
-                serviceList() // goes to the front page if so
+                serviceList(dataStorage: dataStorage) // goes to the front page if so
             } else {
                 SignInView() // does not change pages if false
             }
@@ -226,6 +250,7 @@ struct serviceList: View {
             (!showFavsOnly || Service.isFavorite) // checks if opportunity is favorite
         }
     }
+    var dataStorage: DataStorage
     var body: some View {
         List { //creates a list view for all of the service opportunities
             Toggle(isOn: $showFavsOnly) { // creates a toggle button for saved opportunities
@@ -239,7 +264,7 @@ struct serviceList: View {
         }
         .navigationTitle("Service Opportunities") // keeps "Service Opportunities" at the top of the page
         .toolbar {
-            NavigationLink(destination: ProfilePage()) { // creates a button at the top of the page that goes to the profile page
+            NavigationLink(destination: ProfilePage(dataStorage: dataStorage)) { // creates a button at the top of the page that goes to the profile page
                 Image(systemName: "person.crop.circle") //image representing the button
                     .font(.system(size: 30))
                     .foregroundColor(Color(red: 170/255, green: 170/255, blue: 170/255))
@@ -250,6 +275,17 @@ struct serviceList: View {
 
 struct ProfilePage: View {
     @EnvironmentObject var viewModel: AppViewModel // initializes an environment object that inherits from AppViewModel
+    var dataStorage: DataStorage
+   /* func parse(){
+        do {
+            dataStorage.ref.child("ops").observeSingleEvent(of: .value, with: { snapshot in
+                guard let value = snapshot.value as? [String: Any] else {
+                    return
+                }
+                print("Value: \(value)")
+            })
+        }
+    }*/
     var body: some View {
             VStack { //aligns the structures in a vertical way
                     Image(systemName: "person.crop.circle") // adds a pfp to the top of the page
@@ -271,9 +307,19 @@ struct ProfilePage: View {
                     .background(Color(red: 240/255, green: 240/255, blue: 240/255))
                     .cornerRadius(22)
                     .padding(.bottom, 10)
-                CustomProgress() // calls the custom progress struct for the text field, progress bar, and submit button
+                CustomProgress()// calls the custom progress struct for the text field, progress bar, and submit button
+                    .padding(.bottom, 70)
+                Button( action: {
+                   // parse()
+                }) {
+                    Text("Add New Opportunity")
+                        .foregroundColor(.white)
+                        .frame(width: 200, height: 45)
+                        .background(Color(red: 12/255, green: 78/255, blue: 97/255))
+                        .cornerRadius(22)
+                }
                 Spacer()
-                NavigationLink(destination: Home().onAppear() { // creates a link back to the sign in page
+                NavigationLink(destination: Home(dataStorage: dataStorage).onAppear() { // creates a link back to the sign in page
                     viewModel.signOut() // runs the sign out function
                 }) {
                     Text("Sign Out") // tells the user what the button does
@@ -452,7 +498,7 @@ struct SavedButton: View {
 
 struct Home_Previews: PreviewProvider { // this whole struct is just used to preview the first page-- not useful
     static var previews: some View {
-        Home()
+        Home(dataStorage: DataStorage())
     }
 }
 

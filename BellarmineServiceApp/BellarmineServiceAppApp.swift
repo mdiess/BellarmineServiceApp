@@ -15,8 +15,9 @@ struct BellarmineServiceAppApp: App {
     @StateObject private var modelData = ModelData() // state object for the saved button
     var body: some Scene {
         WindowGroup {
+            let dataStorage = DataStorage()
             let viewModel = AppViewModel() // initializes viewModel
-            ContentView()
+            ContentView(dataStorage: dataStorage)
                 .environmentObject(viewModel) // need environment objects for the environment objects in the main section of code
                 .environmentObject(modelData) 
         }
@@ -28,5 +29,4 @@ class AppDelegate: NSObject, UIApplicationDelegate { // entire function is used 
         FirebaseApp.configure()
         return true
     }
-    //var ref: DatabaseReference! = Database.database().reference()
 }
