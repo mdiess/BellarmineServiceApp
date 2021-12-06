@@ -245,9 +245,10 @@ struct serviceList: View {
     @EnvironmentObject var viewModel: AppViewModel // creates an environment object that inherits from AppViewModel
     @EnvironmentObject var modelData: ModelData // creates an environment object that inherits from ModelData
     @State private var showFavsOnly = false // initializes a variable to show if an opportunity is a favorite or not
+    @State private var selection: Int = 1
     var filteredServices: [services] { // initializes variable to filter between showing only saved opportunities or not
         modelData.Services.filter { Service in
-            (!showFavsOnly || Service.isFavorite) // checks if opportunity is favorite
+            ((Service.year == selection || selection == 1) && (!showFavsOnly || Service.isFavorite))
         }
     }
     var dataStorage: DataStorage
@@ -255,6 +256,15 @@ struct serviceList: View {
         List { //creates a list view for all of the service opportunities
             Toggle(isOn: $showFavsOnly) { // creates a toggle button for saved opportunities
                 Text("Saved Opportunities")
+            }
+            VStack {
+                Picker(selection: $selection, label: Text("Year")) {
+                    Text("All").tag(1)
+                    Text("Freshmen").tag(2)
+                    Text("Sophomore").tag(3)
+                    Text("Junior").tag(4)
+                    Text("Senior").tag(5)
+                }
             }
             ForEach(filteredServices) { Service in // shows each of the service opportunities
                 NavigationLink(destination: serviceDetail(Service: Service)) { //makes each of the opportunities a link
@@ -275,6 +285,7 @@ struct serviceList: View {
 
 struct ProfilePage: View {
     @EnvironmentObject var viewModel: AppViewModel // initializes an environment object that inherits from AppViewModel
+    @State var reflection: String = ""
     var dataStorage: DataStorage
    /* func parse(){
         do {
@@ -308,8 +319,15 @@ struct ProfilePage: View {
                     .cornerRadius(22)
                     .padding(.bottom, 10)
                 CustomProgress()// calls the custom progress struct for the text field, progress bar, and submit button
-                    .padding(.bottom, 70)
-                Button( action: {
+                    .padding(.bottom, 10)
+                TextField("Write your reflection...", text: $reflection)
+                    .offset(y: -82)
+                    .frame(width: 350, height: 200)
+                    //.background(Color(red:251/255, green: 251/255, blue: 251/255))
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .cornerRadius(15)
+                    .border(Color.gray)
+               /* Button( action: {
                    // parse()
                 }) {
                     Text("Add New Opportunity")
@@ -318,6 +336,7 @@ struct ProfilePage: View {
                         .background(Color(red: 12/255, green: 78/255, blue: 97/255))
                         .cornerRadius(22)
                 }
+                */
                 Spacer()
                 NavigationLink(destination: Home(dataStorage: dataStorage).onAppear() { // creates a link back to the sign in page
                     viewModel.signOut() // runs the sign out function
