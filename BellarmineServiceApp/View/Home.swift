@@ -47,14 +47,6 @@ class AppViewModel: ObservableObject {
     var isSignedIn: Bool { //Boolean variable checking if user is signed in
         return auth.currentUser != nil
     }
-    /*
-    func name() {
-        let user = auth.currentUser
-        Text(user.email)
-            .fontWeight(.bold)
-            .font(.system(size: 30))
-    }
-     */
     func signIn(email: String, password: String) {
         auth.signIn(withEmail: email, //checks with firebase database if user exists
                     password: password) { [weak self] result, error in
@@ -79,44 +71,13 @@ class AppViewModel: ObservableObject {
         }
         self.UID = email // sets the user id to the email address
     }
-    /*
-    private func signIn2(email: String) {
-        auth.signIn(withEmail: email) { [weak self] result, error in
-            guard result != nil, error == nil else {
-                return
-            }
-            DispatchQueue.main.async {
-                self?.signedIn = true
-            }
-        }
-        self.UID = email
-    }
-     */
     func signOut() {
         try? auth.signOut() // checks to see if the program can sign out, and runs program if it can
         self.signedIn = false // sets the signed in variable to false
         self.UID = "" //sets the user id to blank
     }
 }
-/*
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    @IBOutlet weak var tableView: UITableView!
-    
-    var postData = ["Message", "Message2"]
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return postData.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell")!
-        cell.textLabel?.text = postData[indexPath.row]
-        return cell
-    }
-    
-    
-}
-*/
+
 struct Home: View {
     @EnvironmentObject var viewModel: AppViewModel // initialize and environment object that inherits from AppViewModel
     var dataStorage: DataStorage
@@ -243,6 +204,7 @@ struct serviceList: View {
     var filteredServices: [services] { // initializes variable to filter between showing only saved opportunities or not
         modelData.Services.filter { Service in
             ((Service.year == selection || selection == 1) && (!showFavsOnly || Service.isFavorite))
+            //This code is used to filter through both saved opportunities, and the year of each opportunity
         }
     }
     var dataStorage: DataStorage
@@ -281,25 +243,12 @@ struct ProfilePage: View {
     @EnvironmentObject var viewModel: AppViewModel // initializes an environment object that inherits from AppViewModel
     @State var reflection: String = ""
     var dataStorage: DataStorage
-   /* func parse(){
-        do {
-            dataStorage.ref.child("ops").observeSingleEvent(of: .value, with: { snapshot in
-                guard let value = snapshot.value as? [String: Any] else {
-                    return
-                }
-                print("Value: \(value)")
-            })
-        }
-    }*/
     var body: some View {
             VStack { //aligns the structures in a vertical way
                     Image(systemName: "person.crop.circle") // adds a pfp to the top of the page
                         .font(.system(size: 150))
                         .foregroundColor(.gray)
                         .shadow(radius: 10)
-                //viewModel.name()
-                //Text("Student Email")
-                //Text(auth.displayName)
                 Text(viewModel.UID) // makes the user's screen name their email
                     .fontWeight(.bold)
                     .font(.system(size: 30))
@@ -321,16 +270,6 @@ struct ProfilePage: View {
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .cornerRadius(15)
                     .border(Color.gray)
-               /* Button( action: {
-                   // parse()
-                }) {
-                    Text("Add New Opportunity")
-                        .foregroundColor(.white)
-                        .frame(width: 200, height: 45)
-                        .background(Color(red: 12/255, green: 78/255, blue: 97/255))
-                        .cornerRadius(22)
-                }
-                */
                 Spacer()
                 NavigationLink(destination: Home(dataStorage: dataStorage).onAppear() { // creates a link back to the sign in page
                     viewModel.signOut() // runs the sign out function
